@@ -2,11 +2,12 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
+import java.util.Hashtable;
 
 public class ColorPicker implements ChangeListener {
     private static JFrame frame;
     private static JPanel main_panel;
-    private static JPanel pallette;
+    private static JPanel palette;
     private static JSlider red_slider;
     private static JSlider blue_slider;
     private static JSlider green_slider;
@@ -15,8 +16,6 @@ public class ColorPicker implements ChangeListener {
     private static JLabel green_label;
     private static JTextField hex_field;
 
-
-
     private static Integer RED;
     private static Integer BLUE;
     private static Integer GREEN;
@@ -24,11 +23,14 @@ public class ColorPicker implements ChangeListener {
 
     ColorPicker(){
         frame = new JFrame("Color Picker");
+        frame.setResizable(true);
+        ImageIcon icon = new ImageIcon("src/palette.png");
+        frame.setIconImage(icon.getImage());
         main_panel = new JPanel();
         main_panel.setLayout(null);
-        pallette = new JPanel();
-        pallette.setBackground(Color.WHITE);
-        pallette.setBounds(10, 10, 460, 100);
+        palette = new JPanel();
+        palette.setBackground(Color.WHITE);
+        palette.setBounds(10, 10, 460, 100);
 
         red_label = new JLabel("R: 255");
         red_label.setBounds(10, 380, 40, 40);
@@ -36,13 +38,17 @@ public class ColorPicker implements ChangeListener {
         green_label.setBounds(70, 380, 40, 40);
         blue_label = new JLabel("B: 255");
         blue_label.setBounds(120, 380, 40, 40);
-        hex_field = new JTextField("#ffffff", 8);
-        hex_field.setBounds(180, 380, 40, 40);
+        hex_field = new JTextField("#ffffff", 12);
+        hex_field.setFont(new Font("Courier New", Font.PLAIN, 20));
+        hex_field.setBounds(210, 390, 90, 20);
 
 
 
         red_slider = new JSlider();
         red_slider.setBounds(10, 130, 460, 80);
+        Hashtable<Integer, JLabel> red_s_label = new Hashtable<>();
+        red_s_label.put(125, new JLabel("RED"));
+        red_slider.setLabelTable(red_s_label);
         red_slider.setMaximum(255);
         red_slider.setValue(255);
         red_slider.setPaintTicks(true);
@@ -52,6 +58,9 @@ public class ColorPicker implements ChangeListener {
 
         green_slider = new JSlider();
         green_slider.setBounds(10, 210, 460, 80);
+        Hashtable<Integer, JLabel> green_s_label = new Hashtable<>();
+        green_s_label.put(125, new JLabel("GREEN"));
+        green_slider.setLabelTable(green_s_label);
         green_slider.setMaximum(255);
         green_slider.setValue(255);
         green_slider.setPaintTicks(true);
@@ -61,6 +70,9 @@ public class ColorPicker implements ChangeListener {
 
         blue_slider = new JSlider();
         blue_slider.setBounds(10, 290, 460, 80);
+        Hashtable<Integer, JLabel> blue_s_label = new Hashtable<>();
+        blue_s_label.put(125, new JLabel("BLUE"));
+        blue_slider.setLabelTable(blue_s_label);
         blue_slider.setMaximum(255);
         blue_slider.setValue(255);
         blue_slider.setPaintTicks(true);
@@ -77,7 +89,7 @@ public class ColorPicker implements ChangeListener {
         main_panel.add(red_label);
         main_panel.add(blue_label);
         main_panel.add(green_label);
-        main_panel.add(pallette);
+        main_panel.add(palette);
         main_panel.add(hex_field);
 
         frame.add(main_panel);
@@ -89,15 +101,15 @@ public class ColorPicker implements ChangeListener {
     @Override
     public void  stateChanged(ChangeEvent e) {
         RED = red_slider.getValue();
-        red_label.setText(RED.toString());
+        red_label.setText("R: " + RED);
         BLUE = blue_slider.getValue();
-        blue_label.setText(BLUE.toString());
+        blue_label.setText("B: " + BLUE);
         GREEN = green_slider.getValue();
-        green_label.setText(GREEN.toString());
+        green_label.setText("G: " + GREEN);
         Color COLOR = new Color(RED, GREEN, BLUE);
         String hex = String.format("#%02x%02x%02x", RED, GREEN, BLUE);
         hex_field.setText(hex);
 
-        pallette.setBackground(COLOR);
+        palette.setBackground(COLOR);
     }
 }
